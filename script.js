@@ -5,23 +5,51 @@ const fruit = ['Apple', 'Apricot', 'Avocado 🥑', 'Banana', 'Bilberry', 'Blackb
 
 function search(str) {
 	let results = [];
-
-	// TODO
-
+	for(let item of fruit){
+		if (item.toLowerCase().includes(str.toLowerCase()) && results.length < 6 && str.toLowerCase() !== " ".repeat(str.length) && str.length !== 0){
+			results.push(item);
+		}
+	}
 	return results;
 }
 
 function searchHandler(e) {
-	// TODO
+	showSuggestions(search(e.target.value), e.target.value)
 }
 
 function showSuggestions(results, inputVal) {
-
-	// TODO
+	suggestions.innerHTML = "";
+	for(let item of results){
+		let newSuggestion = document.createElement("li");
+		let newSugText = "";
+		for(let x in item){
+			if(+x === item.toLowerCase().indexOf(inputVal.toLowerCase()) && +x <= item.toLowerCase().indexOf(inputVal.toLowerCase())+inputVal.length-1){
+				newSugText += "<b>";
+				newSugText += item[x];
+				if(inputVal.length < 2){
+					newSugText += "</b>"
+				}
+			} else if(+x === item.toLowerCase().indexOf(inputVal.toLowerCase())+inputVal.length-1){
+				newSugText += item[x];
+				newSugText += "</b>"
+			} 
+			else{
+				newSugText += item[x]
+			}
+		}
+		newSuggestion.innerHTML = newSugText;
+		suggestions.append(newSuggestion);
+	}
 }
 
 function useSuggestion(e) {
-	// TODO
+	if(e.target.tagName === "B"){
+		input.value = e.target.parentElement.innerText
+		
+	} else{
+	input.value = e.target.innerText
+	}
+	suggestions.innerHTML = "";
 }
 
 input.addEventListener('keyup', searchHandler);
